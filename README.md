@@ -1,10 +1,15 @@
-Sitegeist.Origami
-=================
+#Sitegeist.Origami
+### Asynchronous optimization of images for Flow and Neos with a neos-jobqueue. 
 
-Asynchronous optimization of images for Flow and Neos with a neos-jobqueue. Based on MOC.ImageOptimizer https://packagist.org/packages/moc/imageoptimizer)
+This package is based on MOC.ImageOptimizer https://packagist.org/packages/moc/imageoptimizer)
 
-Introduction
-------------
+### Authors & Sponsors
+
+* Martin Ficzel - ficzel@sitegeist.de
+
+*The development and the public-releases of this package is generously sponsored by our employer http://www.sitegeist.de.*
+
+## Introduction
 
 Neos CMS / Flow framework package that optimizes generated thumbnail images (jpg, png, gif, svg and more) for web presentation.
 
@@ -19,10 +24,9 @@ Should work with Linux, FreeBSD, OSX, SunOS & Windows (only tested Linux & FreeB
 
 Compatible with Neos 3.x+ / 4.x+
 
-Installation
-------------
+## Installation
 
-### Image Optimzation tools
+### Image Optimization tools
 
 Requires npm (node.js) to work out of the box, although binaries can also be installed manually without it.
 
@@ -52,8 +56,7 @@ To actually optimze the images the jobqeue has to be initialized
 ./flow job:work imageOptimization
 ```
 
-Configuration
--------------
+## Configuration
 
 Using the `Settings` configuration, multiple options can be adjusted.
 
@@ -65,8 +68,7 @@ Usage of global available binaries can be configured instead or for specific for
 
 Enable using the setting `Sitegeist.Origami.useGlobalBinary` and configure the path in `Sitegeist.Origami.globalBinaryPath`.
 
-Use alternative libraries for optimization
-------------------------------------------
+## Use alternative libraries for optimization
 
 You can replace the preconfigured libraries with alternative ones.
 
@@ -89,8 +91,7 @@ Add the following to your `Settings` to use `jpegoptim` instead of `jpegtran`:
 When doing this you have to take care that you provide the necessary library yourself as it's not included 
 when doing the installation like described above.
 
-Usage
------
+## Usage
 
 * Clear thumbnails to generate new ones that will automatically be optimized.
 
