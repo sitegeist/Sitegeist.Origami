@@ -12,7 +12,9 @@
     }
   ],
   "require": {
-    "neos/media": "~3.0"
+    "neos/media": "~3.0",
+    "flowpack/jobqueue-common": "*",
+    "flowpack/jobqueue-doctrine": "*"
   },
   "autoload": {
     "psr-4": {
