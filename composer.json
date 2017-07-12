@@ -1,0 +1,24 @@
+{
+  "name": "sitegeist/origami",
+  "type": "neos-package",
+  "description": "Flow package that optimizes generated thumbnail images (jpg, png, gif, svg) for web presentation.",
+  "keywords": [ "imageoptimization", "performance", "images", "media", "neos", "flow" ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Martin Ficzel",
+      "email": "ficzel@sitegeist.de",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "neos/media": "~3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sitegeist\\Origami\\": "Classes"
+    }
+  },
+  "extra": {
+  }
+}
