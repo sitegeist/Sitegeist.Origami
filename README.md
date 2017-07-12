@@ -1,7 +1,7 @@
 Sitegeist.Origami
 =================
 
-Asynchronous optimisation of images for Flow and Neos with a neos-jobqueue. Based on MOC.ImageOptimizer https://packagist.org/packages/moc/imageoptimizer)
+Asynchronous optimization of images for Flow and Neos with a neos-jobqueue. Based on MOC.ImageOptimizer https://packagist.org/packages/moc/imageoptimizer)
 
 Introduction
 ------------
