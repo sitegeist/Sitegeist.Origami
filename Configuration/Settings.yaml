@@ -38,3 +38,14 @@ Sitegeist:
         arguments: "${(pretty ? '--pretty ' : '') + file}"
         parameters:
           pretty: false # keep the output readable
+
+
+Flowpack:
+  JobQueue:
+    Common:
+      presets:
+        sitegeistOrigami:
+          className: Flowpack\JobQueue\Doctrine\Queue\DoctrineQueue
+      queues:
+        imageOptimization:
+          preset: sitegeistOrigami

@@ -36,6 +36,25 @@ npm install -g jpegtran-bin optipng-bin gifsicle svgo
 npm install --prefix Packages/Application/Sitegeist.Origami/Resources/Private/Library
 ```
 
+Setup imageOptimization-JobQueue
+--------------------------------
+
+This has to be done once on every system.
+
+```
+./flow queue:setup imageOptimization
+```
+
+Run imageOptimization-JobQueue
+------------------------------
+
+This is actually executing the optimization tasks. It should be run in intervals. 
+It depends on the target wether it should run forever, for a given interval or a given number of jobs.
+
+```
+./flow job:work imageOptimization
+```
+
 Configuration
 -------------
 
