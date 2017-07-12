@@ -1,5 +1,6 @@
 Sitegeist:
   Origami:
+    enable: true # disable the optization, for instance for local development
     useGlobalBinary: false # use globally installed binaries for all formats instead
     globalBinaryPath: ''
     formats:

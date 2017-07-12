@@ -47,6 +47,10 @@ class ThumbnailAspect
      */
     public function optimizeThumbnail(JoinPointInterface $joinPoint)
     {
+        if ($this->settings['enable'] !== TRUE) {
+            return;
+        }
+
         /** @var \Neos\Media\Domain\Model\Thumbnail $thumbnail */
         $thumbnail = $joinPoint->getProxy();
         $thumbnailResource = $thumbnail->getResource();

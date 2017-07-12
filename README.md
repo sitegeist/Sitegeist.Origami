@@ -8,9 +8,10 @@ Introduction
 
 Neos CMS / Flow framework package that optimizes generated thumbnail images (jpg, png, gif, svg and more) for web presentation.
 
-Original files are never affected since copies are always created for thumbnails.
+Original files of the editors are never affected since copies are always created for thumbnails.
 
-Non-blocking during rendering (asynchronous) optimization.
+The optimisation is executed by a jobrunner later and not during page-creation. The image is imediately available in 
+unoptimzed fashion but is optimized afterwards. From that point on the optized image will be served.   
 
 Using jpegtran, optipng, gifsicle and svgo or alternative customizible ones for the optimizations.
 
@@ -20,6 +21,8 @@ Compatible with Neos 3.x+ / 4.x+
 
 Installation
 ------------
+
+### Image Optimzation tools
 
 Requires npm (node.js) to work out of the box, although binaries can also be installed manually without it.
 
@@ -36,22 +39,16 @@ npm install -g jpegtran-bin optipng-bin gifsicle svgo
 npm install --prefix Packages/Application/Sitegeist.Origami/Resources/Private/Library
 ```
 
-Setup imageOptimization-JobQueue
---------------------------------
+### Job-Queue
 
-This has to be done once on every system.
+To actually optimze the images the jobqeue has to be initialized 
 
 ```
+# This has to be done once on every server.
 ./flow queue:setup imageOptimization
-```
 
-Run imageOptimization-JobQueue
-------------------------------
-
-This is actually executing the optimization tasks. It should be run in intervals. 
-It depends on the target wether it should run forever, for a given interval or a given number of jobs.
-
-```
+# This is actually executing the optimization tasks. It should be run in intervals. 
+# It depends on the target wether it should run forever, for a given interval or a given number of jobs.
 ./flow job:work imageOptimization
 ```
 
@@ -60,7 +57,7 @@ Configuration
 
 Using the `Settings` configuration, multiple options can be adjusted.
 
-Optimization can be disabled for specific file formats.
+Optimization can be disabled for specific file formats or globally.
 
 Additionally options such as optimization level (png & gif), progressive (jpg), pretty (svg) can be adjusted depending on optimization library.
 

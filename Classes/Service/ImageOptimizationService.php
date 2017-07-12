@@ -74,7 +74,12 @@ class ImageOptimizationService
         $output = [];
         exec($cmd, $output, $result);
         $failed = (int)$result !== 0;
-        $this->systemLogger->log($cmd . ' (' . ($failed ? 'Error: ' . $result : 'OK') . ')', $failed ? LOG_ERR : LOG_INFO, $output);
+
+        if ($failed) {
+            $this->systemLogger->log($cmd, LOG_ERR, $output);
+        } else {
+            $this->systemLogger->log($cmd, LOG_INFO, $output);
+        }
     }
 
 }
