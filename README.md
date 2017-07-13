@@ -15,10 +15,11 @@ Neos CMS / Flow framework package that optimizes generated thumbnail images (jpg
 
 Original files of the editors are never affected since copies are always created for thumbnails.
 
-The optimisation is executed by a jobrunner later and not during page-creation. The image is imediately available in 
-unoptimzed fashion but is optimized afterwards. From that point on the optized image will be served.   
+The optimisation is executed asynchronously by a jobrunner later and not during page-creation. The image is imediately 
+available in unoptimzed fashion but is optimized afterwards. From that point on the optized image will be served.   
 
-Using jpegtran, optipng, gifsicle and svgo or alternative customizible ones for the optimizations.
+By default this package is using `jpegtran`, `optipng`, `gifsicle` and `svgo` for the optimizations but the exact optimization 
+command for eacvh format can be configured via settings.
 
 Should work with Linux, FreeBSD, OSX, SunOS & Windows (only tested Linux & FreeBSD so far).
 
@@ -32,15 +33,13 @@ Requires npm (node.js) to work out of the box, although binaries can also be ins
 
 `composer require "sitegeist/origami" "dev-master"`
 
-Ensure the image manipulation libraries `jpegtran` (JPG), `optipng` (PNG), `gifsicle` (GIF) and `svgo` (SVG) are installed globally. Libraries can be skipped if desired, just make sure to disable those mimetypes. 
+Ensure the image manipulation libraries `jpegtran` (JPG), `optipng` (PNG), `gifsicle` (GIF) and `svgo` (SVG) are installed globally.
+Libraries can be skipped if desired, just make sure to disable those mimetypes. 
 
-Alternatively install them using `npm`:
+Alternatively install them globally using `npm`:
+
 ```
-# Globally
 npm install -g jpegtran-bin optipng-bin gifsicle svgo
-
-# Locally
-npm install --prefix Packages/Application/Sitegeist.Origami/Resources/Private/Library
 ```
 
 ### Job-Queue
@@ -60,36 +59,37 @@ To actually optimze the images the jobqeue has to be initialized
 
 Using the `Settings` configuration, multiple options can be adjusted.
 
-Optimization can be disabled for specific file formats or globally.
+Each optimization for a media-format has to be enabled exlicitly since by default
+all optimizations are disabled.
 
-Additionally options such as optimization level (png & gif), progressive (jpg), pretty (svg) can be adjusted depending on optimization library.
+```
+Sitegeist:
+  Origami:
+    formats:
+      'image/jpeg':
+        enabled: true
 
-Usage of global available binaries can be configured instead or for specific formats.
+      'image/png':
+        enabled: true
+        
+      'image/gif':
+        enabled: true
 
-Enable using the setting `Sitegeist.Origami.useGlobalBinary` and configure the path in `Sitegeist.Origami.globalBinaryPath`.
+      'image/svg+xml':
+        enabled: true
+```
 
-## Use alternative libraries for optimization
+You can replace the preconfigured optimization commands via settings.
 
-You can replace the preconfigured libraries with alternative ones.
+```
+Sitegeist:
+  Origami:
+    formats:
+      'image/jpeg':
+        command: "${'jpegoptim --strip-all --max=80 --all-progressive -o ' + file}"
+```
 
-Example:
-
-Add the following to your `Settings` to use `jpegoptim` instead of `jpegtran`:
-
-    Sitegeist:
-      Origami:
-        formats:
-          'image/jpeg':
-            enabled: true
-            library: 'jpegoptim'
-            binaryPath: 'jpegoptim-bin/vendor/jpegoptim'
-            arguments: "${'--strip-all --max=' + quality + ' ' + (progressive ? '--all-progressive ' : '') + '-o ' + file}"
-            parameters:
-              progressive: true # whether or not to serve progressive jpgs
-              quality: 80 # quality level (1-100)
-
-When doing this you have to take care that you provide the necessary library yourself as it's not included 
-when doing the installation like described above.
+When doing this you have to take care that you provide the necessary command on the target system.
 
 ## Usage
 

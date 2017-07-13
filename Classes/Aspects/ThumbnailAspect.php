@@ -47,10 +47,6 @@ class ThumbnailAspect
      */
     public function optimizeThumbnail(JoinPointInterface $joinPoint)
     {
-        if ($this->settings['enable'] !== TRUE) {
-            return;
-        }
-
         /** @var \Neos\Media\Domain\Model\Thumbnail $thumbnail */
         $thumbnail = $joinPoint->getProxy();
         $thumbnailResource = $thumbnail->getResource();
@@ -64,10 +60,10 @@ class ThumbnailAspect
         $file = escapeshellarg($pathAndFilename);
         $imageType = $thumbnailResource->getMediaType();
 
-        if (!array_key_exists($imageType, $this->settings['formats'])) {
-            $this->systemLogger->log(sprintf('Unsupported type "%s" skipped in optimizeThumbnail', $imageType), LOG_INFO);
-            return;
-        } else {
+        if (array_key_exists($imageType, $this->settings['formats'])
+            && array_key_exists('enabled', $this->settings['formats'][$imageType])
+            && $this->settings['formats'][$imageType]['enabled']
+        ) {
             $this->imageOptimizationService->optimizeImage($file, $imageType);
         }
 

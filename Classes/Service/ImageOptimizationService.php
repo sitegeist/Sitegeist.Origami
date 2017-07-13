@@ -5,8 +5,6 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Eel\CompilingEvaluator;
 use Neos\Eel\Utility;
 use Neos\Flow\Log\SystemLoggerInterface;
-use Neos\Flow\Package\PackageManagerInterface;
-use Neos\Flow\ResourceManagement\ResourceManager;
 use Flowpack\JobQueue\Common\Annotations as Job;
 
 /**
@@ -19,18 +17,6 @@ class ImageOptimizationService
      * @Flow\Inject
      */
     protected $systemLogger;
-
-    /**
-     * @Flow\Inject
-     * @var PackageManagerInterface
-     */
-    protected $packageManager;
-
-    /**
-     * @Flow\Inject
-     * @var ResourceManager
-     */
-    protected $resourceManager;
 
     /**
      * @Flow\Inject
@@ -50,35 +36,25 @@ class ImageOptimizationService
      * @Job\Defer(queueName="imageOptimization")
      */
     public function optimizeImage ($file , $imageType) {
-        $useGlobalBinary = $this->settings['useGlobalBinary'];
-        $binaryRootPath = 'Private/Library/node_modules/';
 
-        $librarySettings = $this->settings['formats'][$imageType];
+        if (array_key_exists($imageType, $this->settings['formats'])
+            && array_key_exists('enabled', $this->settings['formats'][$imageType])
+            && $this->settings['formats'][$imageType]['enabled']
+        ) {
+            $command = $this->settings['formats'][$imageType]['command'];
+            $commandEvaluated = Utility::evaluateEelExpression($command, $this->eelEvaluator, ['file' => $file]);
 
-        if ($librarySettings['enabled'] === false) {
-            return;
-        }
+            $output = [];
+            exec($commandEvaluated, $output, $result);
+            $failed = (int)$result !== 0;
 
-        if ($librarySettings['useGlobalBinary'] === true) {
-            $useGlobalBinary = true;
-        }
-
-        $library = $librarySettings['library'];
-        $binaryPath = $librarySettings['binaryPath'];
-        $eelExpression = $librarySettings['arguments'];
-        $parameters = array_merge($librarySettings['parameters'], ['file' => $file]);
-        $arguments = Utility::evaluateEelExpression($eelExpression, $this->eelEvaluator, $parameters);
-
-        $binaryPath = $useGlobalBinary === true ? $this->settings['globalBinaryPath'] . $library : $this->packageManager->getPackage('Sitegeist.Origami')->getResourcesPath() . $binaryRootPath . $binaryPath;
-        $cmd = escapeshellcmd($binaryPath) . ' ' . $arguments;
-        $output = [];
-        exec($cmd, $output, $result);
-        $failed = (int)$result !== 0;
-
-        if ($failed) {
-            $this->systemLogger->log($cmd, LOG_ERR, $output);
+            if ($failed) {
+                $this->systemLogger->log($commandEvaluated, LOG_ERR, $output);
+            } else {
+                $this->systemLogger->log($commandEvaluated, LOG_INFO, $output);
+            }
         } else {
-            $this->systemLogger->log($cmd, LOG_INFO, $output);
+            $this->systemLogger->log(sprintf('Could not optimize image %s of type %s because missing or disabled configuration', $file, $imageType), LOG_ERR);
         }
     }
 
