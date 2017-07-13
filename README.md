@@ -12,31 +12,28 @@ This package is based on MOC.ImageOptimizer https://packagist.org/packages/moc/i
 ## Introduction
 
 Neos CMS / Flow framework package that optimizes generated thumbnail images (jpg, png, gif, svg and more) for web presentation.
+The original files of the editors are never affected since copies are always created for thumbnails.
 
-Original files of the editors are never affected since copies are always created for thumbnails.
+The optimization is executed asynchronously by a jobrunner and not during page-creation. The image is imediately 
+available in unoptimzed fashion. After optimization the new image-file will be served without changing the image-url.   
 
-The optimisation is executed asynchronously by a jobrunner later and not during page-creation. The image is imediately 
-available in unoptimzed fashion but is optimized afterwards. From that point on the optized image will be served.   
+By default this package is using `jpegtran`, `optipng`, `gifsicle` and `svgo` but the exact command for each format 
+can be configured via settings.
 
-By default this package is using `jpegtran`, `optipng`, `gifsicle` and `svgo` for the optimizations but the exact optimization 
-command for eacvh format can be configured via settings.
-
-Should work with Linux, FreeBSD, OSX, SunOS & Windows (only tested Linux & FreeBSD so far).
-
-Compatible with Neos 3.x+ / 4.x+
+Should work with Linux, FreeBSD, OSX, Compatible with Neos 3.x+ / 4.x+
 
 ## Installation
 
-### Image Optimization tools
+Sitegeist.Origami is available via packagist. Just add "sitegeist/origami" : "~1.0" to the require section of the 
+composer.json or run `composer require sitegeist/origami`. We use semantic-versioning so every breaking change 
+will increase the major-version number.
 
-Requires npm (node.js) to work out of the box, although binaries can also be installed manually without it.
+### Image-Optimization Tools
 
-`composer require "sitegeist/origami" "dev-master"`
+Ensure the image manipulation libraries `jpegtran` (JPG), `optipng` (PNG), `gifsicle` (GIF) and `svgo` (SVG) are 
+available on the server.
 
-Ensure the image manipulation libraries `jpegtran` (JPG), `optipng` (PNG), `gifsicle` (GIF) and `svgo` (SVG) are installed globally.
-Libraries can be skipped if desired, just make sure to disable those mimetypes. 
-
-Alternatively install them globally using `npm`:
+You can install the libraries globally using `npm`:
 
 ```
 npm install -g jpegtran-bin optipng-bin gifsicle svgo
@@ -44,7 +41,7 @@ npm install -g jpegtran-bin optipng-bin gifsicle svgo
 
 ### Job-Queue
 
-To actually optimze the images the jobqeue has to be initialized 
+To actually optimize the images the imageOptimization-jobqeue has to be initialized and executed.
 
 ```
 # This has to be done once on every server.
