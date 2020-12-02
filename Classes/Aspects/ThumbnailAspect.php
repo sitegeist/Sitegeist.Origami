@@ -3,7 +3,6 @@ namespace Sitegeist\Origami\Aspects;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
-use Neos\Flow\Log\SystemLoggerInterface;
 use Sitegeist\Origami\Service\ImageOptimizationService;
 
 /**
@@ -12,12 +11,6 @@ use Sitegeist\Origami\Service\ImageOptimizationService;
  */
 class ThumbnailAspect
 {
-    /**
-     * @var SystemLoggerInterface
-     * @Flow\Inject
-     */
-    protected $systemLogger;
-
     /**
      * @var array
      * @Flow\InjectConfiguration

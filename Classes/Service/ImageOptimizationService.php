@@ -4,8 +4,8 @@ namespace Sitegeist\Origami\Service;
 use Neos\Flow\Annotations as Flow;
 use Neos\Eel\CompilingEvaluator;
 use Neos\Eel\Utility;
-use Neos\Flow\Log\SystemLoggerInterface;
 use Flowpack\JobQueue\Common\Annotations as Job;
+use Psr\Log\LoggerInterface;
 
 /**
  * @Flow\Scope("singleton")
@@ -13,10 +13,10 @@ use Flowpack\JobQueue\Common\Annotations as Job;
 class ImageOptimizationService
 {
     /**
-     * @var SystemLoggerInterface
+     * @var LoggerInterface
      * @Flow\Inject
      */
-    protected $systemLogger;
+    protected $logger;
 
     /**
      * @Flow\Inject
@@ -49,12 +49,12 @@ class ImageOptimizationService
             $failed = (int)$result !== 0;
 
             if ($failed) {
-                $this->systemLogger->log($commandEvaluated, LOG_ERR, $output);
+                $this->logger->error($commandEvaluated, $output);
             } else {
-                $this->systemLogger->log($commandEvaluated, LOG_INFO, $output);
+                $this->logger->info($commandEvaluated, $output);
             }
         } else {
-            $this->systemLogger->log(sprintf('Could not optimize image %s of type %s because missing or disabled configuration', $file, $imageType), LOG_ERR);
+            $this->logger->error(sprintf('Could not optimize image %s of type %s because missing or disabled configuration', $file, $imageType));
         }
     }
 
