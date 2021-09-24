@@ -1,4 +1,7 @@
-# Sitegeist.Origami
+# Sitegeist.Origami - Abbandoned 
+
+!!! Asynchronous images make the optimzation via jobqueue obsolete. This package is abandoned in favor of the original MOC.ImageOptimizer !!!  
+
 ### Asynchronous optimization of images for Flow and Neos with a neos-jobqueue. 
 
 This package is based on MOC.ImageOptimizer https://packagist.org/packages/moc/imageoptimizer)
