@@ -4,7 +4,7 @@
   "description": "Flow package that optimizes generated thumbnail images (jpg, png, gif, svg) for web presentation.",
   "keywords": [ "imageoptimization", "performance", "images", "media", "neos", "flow" ],
   "license": "MIT",
-  "abandoned": "moc/imageoptimizer"
+  "abandoned": "moc/imageoptimizer",
   "authors": [
     {
       "name": "Martin Ficzel",
